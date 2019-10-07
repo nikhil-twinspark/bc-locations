@@ -58,7 +58,10 @@ function bc_location_include_css_js($hook){
     if ( $current_screen->post_type == 'bc_locations') {
         wp_register_style('bc-location-plugin-css', plugins_url('assests/css/bootstrap.min.css', __FILE__), array(), '1.0.0', 'all');
         wp_enqueue_style('bc-location-plugin-css');
-    } 
+
+        wp_enqueue_script('bc-location-quick-edit-js', plugin_dir_url(__FILE__).'assests/js/bc-location-quick-edit.js', true);
+    }
+
 }
 
 
@@ -82,54 +85,23 @@ function bc_location_save_custom_taxonomy($term_id) {
     }
 }
 
-/*add_action( 'edit_term', 'pdf_save_magazine', 10, 3 );
-function pdf_save_magazine($term_id, $tt_id, $taxonomy) {
-
-    echo "<pre>";
-    // print_r($term_id);
-    // die();
-    // print_r($taxonomy); die();
-   $term = get_term($term_id, $taxonomy);
-   // print_r($term->slug);//die('ss');
-   // echo "<br>";
-   // print_r($term->name);
-   // echo "<br>";
-   // print_r($tt_id);
-   // echo "<br>";
-   // // print_r($taxonomy);
-   // echo "<br>";
-   // $term_slug = $term->slug;
-   // die();
+// update the menu while editing the category
+add_action( 'edited_term', 'bc_location_category_after_save', 10, 3 );
+function bc_location_category_after_save($term_id, $tt_id, $taxonomy) {
+    if($taxonomy != 'bc_location_category'){
+        return;
+    }
+    $term = get_term($term_id, $taxonomy);
     $slug = $term->slug;
     $name = $term->name;
-    $menus = get_terms(['hide_empty' => false,'taxonomy'=>'nav_menu']);
-    // print_r($menus); die();
-    foreach ( $menus as $key => $value) {
-        print_r($value); die('ss');
-        $data = (array) $value;
-        if (in_array($slug, [$data['slug']])) {
-            echo 'in array';
-            echo "<br>";
-            echo $slug;
-            echo "<br>";
-            echo $name;
-
-            $menu_data = [
-                'menu-item-title' => $name,
-                // 'menu-item-object-id' => $post->ID,
-                // 'menu-item-object' => 'post',
-                // 'menu-item-status' => 'publish',
-                // 'menu-item-type' => 'post_type',
-            ];
-            // print_r($menu_data);die('ss');
-            // $res = wp_update_nav_menu_item($value->term_id,$value->term_id, $menu_data);
-            // print_r($res);die('ss');
-        }
+    $menu = wp_get_nav_menu_object($slug);
+    if(!$menu){
+        return;
     }
-    // $menu_exists = wp_get_nav_menu_object($name);
-
-    // die();
-}*/
+    $menu = (array) $menu;
+    $menu = array_merge($menu, ['name' => $name]);
+    wp_update_term($menu['term_id'], 'nav_menu', $menu);
+}
 
 
 /**
