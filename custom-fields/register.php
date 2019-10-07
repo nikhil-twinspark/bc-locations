@@ -155,7 +155,6 @@ function bc_location_save_metabox( $post_id, $post ) {
 add_action( 'save_post', 'bc_location_save_metabox', 1, 2 );
 
 
-
  //This function initializes the meta box.
 function bc_location_custom_editor_meta_box() {    
            add_meta_box (
@@ -202,25 +201,16 @@ function custom_editor_save_postdata($post_id) {
 add_action('save_post', 'custom_editor_save_postdata');
 add_action('admin_init', 'bc_location_custom_editor_meta_box');
 
-/*function my_function( $post_id,$post ){
-    // print_r($post);die();
-    // echo "<pre>";
-    // print_r($_POST);die();
-    if ( ! wp_is_post_revision( $post_id ) ){
-    
-        // unhook this function so it doesn't loop infinitely
-        remove_action('save_post', 'my_function');
-        $sanitizedtitle = wp_filter_post_kses( $_POST['bc_location_title_metabox'] );
-        $my_post = array(
-              'ID'           => $post_id,
-              'post_title'   => $sanitizedtitle,
-          );
-
-        // update the post, which calls save_post again
-        wp_update_post( $my_post );
-
-        // re-hook this function
-        add_action('save_post', 'my_function');
+// Change Title on insert and update of location title
+add_filter('wp_insert_post_data', 'bc_location_change_title');
+function bc_location_change_title($data){
+    if($data['post_type'] != 'bc_locations'){
+        return $data;
     }
+    if ( !isset( $_POST['bc_location_title_metabox'] ) ) {
+        return $data;
+    }
+    $data['post_title'] = $_POST['bc_location_title_metabox'];
+    return $data;
 }
-add_action('save_post', 'my_function', 1, 2);*/
+

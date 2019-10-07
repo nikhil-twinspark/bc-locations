@@ -88,7 +88,7 @@ function pdf_save_magazine($term_id, $tt_id, $taxonomy) {
     echo "<pre>";
     // print_r($term_id);
     // die();
-   //  // print_r($get_category); die();
+    // print_r($taxonomy); die();
    $term = get_term($term_id, $taxonomy);
    // print_r($term->slug);//die('ss');
    // echo "<br>";
@@ -105,6 +105,7 @@ function pdf_save_magazine($term_id, $tt_id, $taxonomy) {
     $menus = get_terms(['hide_empty' => false,'taxonomy'=>'nav_menu']);
     // print_r($menus); die();
     foreach ( $menus as $key => $value) {
+        print_r($value); die('ss');
         $data = (array) $value;
         if (in_array($slug, [$data['slug']])) {
             echo 'in array';
@@ -112,11 +113,22 @@ function pdf_save_magazine($term_id, $tt_id, $taxonomy) {
             echo $slug;
             echo "<br>";
             echo $name;
+
+            $menu_data = [
+                'menu-item-title' => $name,
+                // 'menu-item-object-id' => $post->ID,
+                // 'menu-item-object' => 'post',
+                // 'menu-item-status' => 'publish',
+                // 'menu-item-type' => 'post_type',
+            ];
+            // print_r($menu_data);die('ss');
+            // $res = wp_update_nav_menu_item($value->term_id,$value->term_id, $menu_data);
+            // print_r($res);die('ss');
         }
     }
     // $menu_exists = wp_get_nav_menu_object($name);
 
-    die();
+    // die();
 }*/
 
 
@@ -169,9 +181,7 @@ function bc_location_new_post_create_menu_as_per_location_category($new_status, 
     wp_update_nav_menu_item($menu->term_id, $db_id, $menu_data);
 }
 
-/*
- * ADMIN COLUMN - HEADERS
- */
+/** ADMIN COLUMN - HEADERS*/
 add_filter('manage_edit-bc_locations_columns', 'add_new_locations_columns');
 function add_new_locations_columns($concerts_columns) {
     $new_columns['cb'] = '<input type="checkbox" />';
@@ -184,9 +194,7 @@ function add_new_locations_columns($concerts_columns) {
     return $new_columns;
 }
 
-/*
- * ADMIN COLUMN - CONTENT
- */
+/** ADMIN COLUMN - CONTENT*/
 add_action('manage_bc_locations_posts_custom_column', 'manage_locations_columns', 10, 2);
 function manage_locations_columns($column_name, $id) {
     global $post;
