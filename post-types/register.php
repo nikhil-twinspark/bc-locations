@@ -1,11 +1,11 @@
 <?php
 function bc_location_register_location_type() {
     $labels = array( 
-        'name' => __( 'Locations', BCDOMAIN ),
-        'singular_name' => __( 'Location', BCDOMAIN ),
-        'archives' => __( 'Locations Calendar', BCDOMAIN ),
-        'add_new' => __( 'Add New Location', BCDOMAIN ),
-        'add_new_item' => __( 'Add New Location', BCDOMAIN ),
+        'name' => __( 'Locations', BCLOCATIONDOMAIN ),
+        'singular_name' => __( 'Location', BCLOCATIONDOMAIN ),
+        'archives' => __( 'Locations Calendar', BCLOCATIONDOMAIN ),
+        'add_new' => __( 'Add New Location', BCLOCATIONDOMAIN ),
+        'add_new_item' => __( 'Add New Location', BCLOCATIONDOMAIN ),
     );
 
     $args = array( 
