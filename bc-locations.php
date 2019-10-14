@@ -265,6 +265,14 @@ function bc_location_general_admin_notice(){
 }
 add_action('admin_notices', 'bc_location_general_admin_notice');
 
+// Remove description text field from category
+function remove_description_form() {
+    echo "<style> .term-description-wrap{display:none;}</style>";
+}
+add_action( "bc_location_category_edit_form", 'remove_description_form');
+add_action( "bc_location_category_add_form", 'remove_description_form');
+
+
 function bc_location_us_state_list(){
 $states = array(
     'AL' => 'Alabama',

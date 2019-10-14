@@ -3,7 +3,7 @@ function bc_location_register_location_taxonomy() {
     $labels = array(
         'name' => __( 'Categories', BCLOCATIONDOMAIN ),
         'singular_name' => __( 'Category', BCLOCATIONDOMAIN ),
-        'add_new_item' => __( 'Add New Category', BCLOCATIONDOMAIN ),
+        'add_new_item' => __( 'Add Category', BCLOCATIONDOMAIN ),
     );
 
     $args = array(
