@@ -4,7 +4,7 @@ function bc_location_register_location_type() {
         'name' => __( 'Locations', BCLOCATIONDOMAIN ),
         'singular_name' => __( 'Location', BCLOCATIONDOMAIN ),
         'archives' => __( 'Locations Calendar', BCLOCATIONDOMAIN ),
-        'add_new' => __( 'Add New Location', BCLOCATIONDOMAIN ),
+        'add_new' => __( 'Add New', BCLOCATIONDOMAIN ),
         'add_new_item' => __( 'Add New Location', BCLOCATIONDOMAIN ),
     );
 
