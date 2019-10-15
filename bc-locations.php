@@ -103,6 +103,27 @@ function bc_location_category_after_save($term_id, $tt_id, $taxonomy) {
     wp_update_term($menu['term_id'], 'nav_menu', $menu);
 }
 
+/*
+delete the menu when taxonomy is deleted 
+@$term_id integer id of the term is gonna be deleted
+@$term_taxonomy_id integer
+@$deleted_term object term object (object of class stdClass)
+*/    
+add_action( "delete_bc_location_category",'bc_location_delete_taxonomy_meta', 10,3 );
+function bc_location_delete_taxonomy_meta($term_id, $term_taxonomy_id, $deleted_term ){
+    if($deleted_term->taxonomy != 'bc_location_category'){
+        return;
+    }
+    $slug = $deleted_term->slug;
+    $name = $deleted_term->name;
+    $menu = wp_get_nav_menu_object($slug);
+    if(!$menu){
+        return;
+    }
+    $menu = (array) $menu;
+    $menu = array_merge($menu, ['name' => $name]);
+    wp_delete_term($menu['term_id'], 'nav_menu', $menu);
+}
 
 /**
 * Creates a select field with US states as values for locations
@@ -329,3 +350,4 @@ $states = array(
     );
 return $states;
 }
+
