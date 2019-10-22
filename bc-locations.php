@@ -50,6 +50,43 @@ function bc_location_check_to_radio(){
     }
 }
 
+add_action('admin_head', 'bc_location_add_custom_css');
+function bc_location_add_custom_css(){
+    echo '<style type="text/css">
+    #permalinks_customizer_form th{display:none;}
+    #permalinks-customizer-post-slug {width: 100%!important;height: 32px!important;margin-top: 10px !important;}
+    #permalinks_customizer_form td{padding: 15px 0px !important;}
+    #permalinks-customizer-edit-box label{display:none !important;}
+    #view-post-btn {display: none;}
+    #regenerate_permalink {display: none;}
+    #bc_location_categorychecklist {margin-top: 10px;}
+    </style>';
+}
+
+// Remove parent dropdown from taxonomy
+add_action( 'admin_head-edit-tags.php', 'bc_location_remove_tax_parent_dropdown' );
+add_action( 'admin_head-term.php', 'bc_location_remove_tax_parent_dropdown' );
+add_action( 'admin_head-post.php', 'bc_location_remove_tax_parent_dropdown' );
+add_action( 'admin_head-post-new.php', 'bc_location_remove_tax_parent_dropdown' ); 
+function bc_location_remove_tax_parent_dropdown() {
+    $screen = get_current_screen();
+    if ($screen->taxonomy == 'bc_location_category') {
+        if ($screen->base == 'edit-tags') {
+            $parent = "$('label[for=parent]').parent()";
+        } elseif ($screen->base == 'term') {
+            $parent = "$('label[for=parent]').parent().parent()";
+        }
+    } elseif ($screen->post_type == 'post') {
+        $parent = "$('#newcategory_parent')";
+    } else {
+        return;
+    }
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {<?php echo $parent; ?>.remove();});
+    </script>
+<?php 
+}
 
 // Add Conditionally css & js for specific pages
 add_action('admin_enqueue_scripts', 'bc_location_include_css_js');
