@@ -1,9 +1,9 @@
 <?php
 function bc_location_register_location_type() {
     $labels = array( 
-        'name' => __( 'Locations', BCLOCATIONDOMAIN ),
+        'name' => __( 'Geotargeting', BCLOCATIONDOMAIN ),
         'singular_name' => __( 'Location', BCLOCATIONDOMAIN ),
-        'archives' => __( 'Locations Calendar', BCLOCATIONDOMAIN ),
+        'archives' => __( 'Locations', BCLOCATIONDOMAIN ),
         'add_new' => __( 'Add New', BCLOCATIONDOMAIN ),
         'add_new_item' => __( 'Add New Location', BCLOCATIONDOMAIN ),
     );
@@ -12,9 +12,9 @@ function bc_location_register_location_type() {
         'labels' => $labels,
         'public' => true,
         'has_archive' => 'locations',
-        'rewrite' => array( 'has_front' => true ),
+        'rewrite' => array( 'has_front' => false ,'slug' => 'geolocation'),
         'menu_icon' => 'dashicons-location',
-        'supports' => false,
+        'supports'  => array('title','editor','thumbnail'),
         'show_in_rest' => true,
     );
 

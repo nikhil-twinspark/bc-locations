@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       BC Locations
+ * Plugin Name:       BC Geotargeting
  * Plugin URI:        https://github.com/nikhil-twinspark/locations
  * Description:       A simple plugin for creating custom post types and taxonomies related to a locations.
  * Version:           1.0.0
@@ -41,15 +41,6 @@ function bc_location_uninstall() {
     // Removes the directory not the data
 }
 
-// Convert location taxonomy multiselect to radio button 
-add_action('admin_footer', 'bc_location_check_to_radio');
-function bc_location_check_to_radio(){
-    $current_screen = get_current_screen();
-    if ( $current_screen->post_type == 'bc_locations') {
-    echo '<script type="text/javascript">jQuery("#bc_location_categorychecklist-pop input, #bc_location_categorychecklist input, .cat-checklist input").each(function(){this.type="radio"});</script>';
-    }
-}
-
 add_action('admin_head', 'bc_location_add_custom_css');
 function bc_location_add_custom_css(){
     echo '<style type="text/css">
@@ -86,19 +77,6 @@ function bc_location_remove_tax_parent_dropdown() {
     jQuery(document).ready(function($) {<?php echo $parent; ?>.remove();});
     </script>
 <?php 
-}
-
-// Add Conditionally css & js for specific pages
-add_action('admin_enqueue_scripts', 'bc_location_include_css_js');
-function bc_location_include_css_js($hook){
-    $current_screen = get_current_screen();
-    if ( $current_screen->post_type == 'bc_locations') {
-        wp_register_style('bc-location-plugin-css', plugins_url('assests/css/bootstrap.min.css', __FILE__), array(), '1.0.0', 'all');
-        wp_enqueue_style('bc-location-plugin-css');
-
-        wp_enqueue_script('bc-location-quick-edit-js', plugin_dir_url(__FILE__).'assests/js/bc-location-quick-edit.js', true);
-    }
-
 }
 
 
@@ -331,6 +309,41 @@ add_action( "bc_location_category_edit_form", 'remove_description_form');
 add_action( "bc_location_category_add_form", 'remove_description_form');
 
 
+add_shortcode( 'bc-geotargeting', 'bc_location_shortcode' );
+function bc_location_shortcode ( $atts ) {
+    $categoryIds = null;
+    $args  = array( 'post_type' => 'bc_locations', 'posts_per_page' => -1, 'order'=> 'ASC','post_status'  => 'publish');
+    if(isset($atts['category_id'])) {
+        $categoryIds = explode(',', $atts['category_id']);
+        $taxArgs = array(
+                        array(
+                            'taxonomy' => 'bc_location_category', //double check your taxonomy name in you dd 
+                            'field'    => 'id',
+                            'terms'    => $categoryIds,
+                        ),
+                        );
+        $args['tax_query'] = $taxArgs;
+    }
+    
+    $query = new WP_Query( $args );
+    if ( $query->have_posts() ) :
+        if(isset($atts['withrowwrapper']) == 1) { echo "<div class='row bc_geolocation_list'>"; }
+        while($query->have_posts()) : $query->the_post();
+        ?>
+            <div class="col-md-3 bc_geolocation_list_item">
+                <h5 class="nav-item mr-5">
+                    <a class="nav-link" href="<?php the_permalink(); ?>"><?php the_title(); ?> </a>
+                </h5>
+            </div>
+        <?php
+        endwhile; 
+        if(isset($atts['withrowwrapper']) == 1) 
+            { echo "</div>"; }
+        wp_reset_query();
+    endif;
+}
+
+
 function bc_location_us_state_list(){
 $states = array(
     'AL' => 'Alabama',
@@ -387,4 +400,3 @@ $states = array(
     );
 return $states;
 }
-
