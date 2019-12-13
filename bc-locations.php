@@ -177,16 +177,16 @@ function bc_location_new_post_create_menu_as_per_location_category($new_status, 
 }
 
 /** ADMIN COLUMN - HEADERS*/
-// add_filter('manage_edit-bc_locations_columns', 'add_new_locations_columns');
-function add_new_locations_columns($concerts_columns) {
-    $new_columns['cb'] = '<input type="checkbox" />';
-    $new_columns['title'] = _x('Title', 'column name');
-    $new_columns['city'] = __('City');
-    $new_columns['state'] = __('State');
-    $new_columns['category'] = __('Category');
-    $new_columns['date_custom'] = __('Date');
-    $new_columns['status'] = __('Status');
-    return $new_columns;
+add_filter('manage_edit-bc_locations_columns', 'add_new_locations_columns');
+function add_new_locations_columns($columns) {
+    return array(
+                'cb' => $columns['cb'],
+                'title' => $columns['title'],
+                'city' => __('City'),
+                'state' => __('State'),
+                'taxonomy-bc_location_category' => 'Categories',
+                'date' => 'Date',
+            ); 
 }
 
 /** ADMIN COLUMN - CONTENT*/
