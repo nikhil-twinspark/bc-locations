@@ -41,19 +41,6 @@ function bc_location_uninstall() {
     // Removes the directory not the data
 }
 
-add_action('admin_head', 'bc_location_add_custom_css');
-function bc_location_add_custom_css(){
-    echo '<style type="text/css">
-    #permalinks_customizer_form th{display:none;}
-    #permalinks-customizer-post-slug {width: 100%!important;height: 32px!important;margin-top: 10px !important;}
-    #permalinks_customizer_form td{padding: 15px 0px !important;}
-    #permalinks-customizer-edit-box label{display:none !important;}
-    #view-post-btn {display: none;}
-    #regenerate_permalink {display: none;}
-    #bc_location_categorychecklist {margin-top: 10px;}
-    </style>';
-}
-
 // Remove parent dropdown from taxonomy
 add_action( 'admin_head-edit-tags.php', 'bc_location_remove_tax_parent_dropdown' );
 add_action( 'admin_head-term.php', 'bc_location_remove_tax_parent_dropdown' );
@@ -190,7 +177,7 @@ function bc_location_new_post_create_menu_as_per_location_category($new_status, 
 }
 
 /** ADMIN COLUMN - HEADERS*/
-add_filter('manage_edit-bc_locations_columns', 'add_new_locations_columns');
+// add_filter('manage_edit-bc_locations_columns', 'add_new_locations_columns');
 function add_new_locations_columns($concerts_columns) {
     $new_columns['cb'] = '<input type="checkbox" />';
     $new_columns['title'] = _x('Title', 'column name');
@@ -207,9 +194,6 @@ add_action('manage_bc_locations_posts_custom_column', 'manage_locations_columns'
 function manage_locations_columns($column_name, $id) {
     global $post;
     switch ($column_name) {
-        case 'title':
-            echo $get_title = get_post_meta( $post->ID , 'custom_title' , true );
-            break;
         case 'city':
             echo get_post_meta( $post->ID , 'custom_city' , true );
             break;
@@ -220,7 +204,7 @@ function manage_locations_columns($column_name, $id) {
             $list_tax =  get_the_terms( $post->ID , 'bc_location_category' , true );
             if(isset($list_tax) && !empty($list_tax)){
                 foreach ($list_tax as $key => $value) {
-                    echo $value->name;
+                    echo $value->name.",";
                 }
             }
             break;
