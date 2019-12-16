@@ -5,7 +5,7 @@ function bc_location_register_location_type() {
         'singular_name' => __( 'Location', BCLOCATIONDOMAIN ),
         'archives' => __( 'Locations', BCLOCATIONDOMAIN ),
         'add_new' => __( 'Add New', BCLOCATIONDOMAIN ),
-        'add_new_item' => __( 'Add New Location', BCLOCATIONDOMAIN ),
+        'add_new_item' => __( 'Geotargeting - Add New', BCLOCATIONDOMAIN ),
     );
 
     $args = array( 
