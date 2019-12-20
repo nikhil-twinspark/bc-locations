@@ -327,6 +327,18 @@ function bc_location_shortcode ( $atts ) {
     endif;
 }
 
+// Admin notice for displaying shortcode on index page
+add_action('admin_notices', 'bc_locations_general_admin_notice');
+function bc_locations_general_admin_notice(){
+    global $pagenow;
+    global $post;
+    if ($pagenow == 'edit.php' &&  (isset($post->post_type) ? $post->post_type : null) == 'bc_locations') { 
+     echo '<div class="notice notice-success is-dismissible">
+            <p>Shortcode [bc-geotargeting]</p>
+         </div>';
+    }
+}
+
 
 function bc_location_us_state_list(){
 $states = array(
