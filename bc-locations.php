@@ -62,6 +62,7 @@ function bc_location_remove_tax_parent_dropdown() {
     ?>
     <script type="text/javascript">
     jQuery(document).ready(function($) {<?php echo $parent; ?>.remove();});
+    jQuery('table tr').find('td:eq(1),th:eq(1)').remove();
     </script>
 <?php 
 }
@@ -284,6 +285,7 @@ function bc_location_general_admin_notice(){
     }
 }
 add_action('admin_notices', 'bc_location_general_admin_notice');
+
 
 // Remove description text field from category
 function remove_description_form() {

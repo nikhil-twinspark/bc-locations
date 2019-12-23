@@ -24,18 +24,24 @@ function bc_location_metabox() {
     $city = get_post_meta( $post->ID, 'custom_city', true );
     $state = get_post_meta( $post->ID, 'custom_state', true );
     ?>
-        <label><?php _e( 'City', 'custom_city' );?></label>
-        <input type="text" name="bc_location_city_metabox" id="bc_location_city_metabox" value="<?php echo esc_attr( $city ); ?>" required>
-        <label><?php _e( 'State', 'custom_state' );?></label>
-        <?php $list_states = bc_location_us_state_list();?>
-        <select name="bc_location_state_metabox" id="bc_location_state_metabox" required>
-            <option>Select State</option>
-            <?php foreach ($list_states as $key => $value): ?>
-                <option value="<?php echo $key; ?>" <?= $key==$state ? 'selected="selected"':'' ?>>
-                    <?php echo $value; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+    <div>
+        <div style="float: right;">
+            <label><?php _e( 'State', 'custom_state' );?></label>
+            <?php $list_states = bc_location_us_state_list();?>
+            <select name="bc_location_state_metabox" id="bc_location_state_metabox" required>
+                <option>Select State</option>
+                <?php foreach ($list_states as $key => $value): ?>
+                    <option value="<?php echo $key; ?>" <?= $key==$state ? 'selected="selected"':'' ?>>
+                        <?php echo $value; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label><?php _e( 'City', 'custom_city' );?></label>
+            <input type="text" name="bc_location_city_metabox" id="bc_location_city_metabox" value="<?php echo esc_attr( $city ); ?>" required>
+        </div>
+    </div>
  <?php wp_nonce_field( 'bc_location_form_metabox_nonce', 'bc_location_form_metabox_process' );
 }
 
